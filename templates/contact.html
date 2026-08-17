@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="page wrap">
+  <header class="page-head">
+    <p class="eyebrow">{{ site.legal_name }}</p>
+    <h1>Contact</h1>
+    <p class="lede">Product questions, orders, and contract design inquiries.</p>
+  </header>
+  <div class="prose">
+    <p>
+      <strong>Email:</strong> <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
+      <strong>Location:</strong> {{ site.location }}
+      {% if site.phone %}<br><strong>Phone:</strong> {{ site.phone }}{% endif %}
+    </p>
+    <p>For contract design, include what the device should do, where it will live, your timeline, and a budget range if you have one.</p>
+
+    {% if site.formspree_id %}
+    <h2>Send a message</h2>
+    <form class="form" action="https://formspree.io/f/{{ site.formspree_id }}" method="POST">
+      <label>Name
+        <input type="text" name="name" required>
+      </label>
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Topic
+        <select name="topic">
+          <option>Product question</option>
+          <option>Order</option>
+          <option>Contract design</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label>Message
+        <textarea name="message" required></textarea>
+      </label>
+      <button class="btn" type="submit">Send</button>
+    </form>
+    {% else %}
+    <p>Prefer email. Use the address above and we will get back to you.</p>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

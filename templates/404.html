@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="page wrap">
+  <header class="page-head">
+    <p class="eyebrow">404</p>
+    <h1>That page is not here.</h1>
+    <p class="lede">Try the <a href="{{ url('/') }}">home page</a> or <a href="{{ url('/products/') }}">products</a>.</p>
+  </header>
+</article>
+{% endblock %}

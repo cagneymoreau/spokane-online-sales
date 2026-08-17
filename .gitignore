@@ -1,0 +1,9 @@
+_site/
+.venv/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+.bundle/
+__pycache__/
+*~

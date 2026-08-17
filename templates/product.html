@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="product wrap">
+  <p class="crumb"><a href="{{ url('/products/') }}">Products</a> / {{ product.title }}</p>
+
+  <div class="product-grid">
+    <div>
+      {% if product.image %}
+        <figure class="product-hero">
+          <img id="product-main-image" src="{{ url(product.image) }}" alt="{{ product.title }}">
+        </figure>
+      {% else %}
+        <figure class="product-hero product-hero-empty">
+          <span>Add a photo in front matter: <code>image:</code></span>
+        </figure>
+      {% endif %}
+
+      {% if product.gallery %}
+        <div class="thumbs" role="list">
+          {% if product.image %}
+            <button type="button" class="thumb is-active" data-src="{{ url(product.image) }}" aria-label="Main photo">
+              <img src="{{ url(product.image) }}" alt="">
+            </button>
+          {% endif %}
+          {% for src in product.gallery %}
+            <button type="button" class="thumb" data-src="{{ url(src) }}" aria-label="Photo {{ loop.index }}">
+              <img src="{{ url(src) }}" alt="">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="product-buy">
+      {% set status = product.status %}
+      <p class="eyebrow">{{ status.replace("_", " ") }}</p>
+      <h1>{{ product.title }}</h1>
+      {% if product.price %}<p class="price">{{ product.price }}</p>{% endif %}
+      {% if product.excerpt %}<p class="lede">{{ product.excerpt }}</p>{% endif %}
+
+      {% if status == "available" and product.shopify_url %}
+        <p>
+          <a class="btn" href="{{ product.shopify_url }}">Buy with Shopify</a>
+        </p>
+        <p class="hint">Checkout is handled by Shopify. Payment lands in your Shopify orders.</p>
+      {% elif status == "coming_soon" %}
+        <p class="notice">This product is not for sale yet. Check back, or <a href="{{ url('/contact/') }}">contact us</a> if you want to be notified.</p>
+      {% elif status == "sold_out" %}
+        <p class="notice">Currently sold out.</p>
+      {% elif status == "available" %}
+        <p class="notice">Add a Shopify payment link in this product’s <code>shopify_url</code> field to enable buying.</p>
+      {% endif %}
+
+      {% if product.specs %}
+        <dl class="specs">
+          {% for key, value in product.specs.items() %}
+            <div>
+              <dt>{{ key }}</dt>
+              <dd>{{ value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="prose product-body">
+    {{ product.body_html | safe }}
+  </div>
+
+  {% if product.files %}
+    <section class="downloads">
+      <h2>Manuals and files</h2>
+      <ul>
+        {% for file in product.files %}
+          <li>
+            <a href="{{ url(file.path) }}">{{ file.name }}</a>
+            {% if file.note %}<span class="muted"> — {{ file.note }}</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</article>
+
+<script>
+  (function () {
+    var main = document.getElementById("product-main-image");
+    if (!main) return;
+    document.querySelectorAll(".thumb").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        main.src = btn.getAttribute("data-src");
+        document.querySelectorAll(".thumb").forEach(function (b) { b.classList.remove("is-active"); });
+        btn.classList.add("is-active");
+      });
+    });
+  })();
+</script>
+{% endblock %}
