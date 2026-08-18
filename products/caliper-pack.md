@@ -5,8 +5,11 @@ excerpt: >-
   This is a two-piece outside caliper pack: a pocket caliper for everyday small spans and a large 14-inch caliper for bigger round and odd-shaped objects. Span the jaws around something a tape does not sit on well, then read the gap on the scale.
 price: "$TBD"
 status: coming_soon
-image: /assets/images/products/caliper-pack.svg
-gallery: []
+image: /assets/images/products/caliper/photo_6_2026-08-18_09-03-42.jpg
+gallery:
+  - /assets/images/products/caliper/photo_2_2026-08-18_09-03-42.jpg
+  - /assets/images/products/caliper/photo_3_2026-08-18_09-03-42.jpg
+  - /assets/images/products/caliper/photo_4_2026-08-18_09-03-42.jpg
 shopify_url: ""
 featured: true
 specs:
@@ -20,15 +23,19 @@ files:
 
 ## Description & Use Case
 
-This pack includes two outside / gap calipers for measuring diameter and span on round, tapered, lumpy, or in-place objects. The pocket caliper measures up to 4½ inches. The large caliper measures up to 14¾ inches. Open the jaws around the object, then read the scale.
+This pack includes two outside calipers for measuring diameter and span on round, tapered, lumpy, or in-place objects. The pocket caliper measures up to 4½ inches. The large caliper measures up to 14¾ inches. Open the jaws around the object, then read the scale.
 
-Handy for outside diameter and span where a tape does not sit well. People often use tools like this to size fruit and vegetables — apples, citrus, onions, squash, melons, pumpkins — and to check trunk or stem diameter on saplings and small trees, or to compare harvest and market lots. Also used around firewood, logs, and landscape plants.
+Handy for outside diameter and span where a tape does not sit well. 
 
-Often used as a body-width gauge for sewing, costume, or gear fit: head (hats, helmets, costumes), neck, wrist, calf, thigh, shoulder width, and similar spans. This is a simple span tool, not a body-fat, medical, or diagnostic instrument.
+Fruit and vegetables or to check the trunk or stem diameter on saplings and small trees.
 
-Handy in a garage or studio when you are matching diameters as you go: woodturning and lathe work (spindles, bowls), pottery and ceramics (rims, lids, repeated pieces), sculpture and props, foam and blank shaping, furniture and dowels, pipe and round stock, and packing odd parts.
+Natural objects such as rocks, eggs or animal.
 
-Also used in classrooms and field notes for comparing diameters of everyday objects — heads, trunks, produce — without treating it as a scientific or certified forestry instrument.
+Often used as a body-width gauge for sewing, costume, or gear fit: head (hats, helmets, costumes).
+
+Handy work or crafts such as woodturning, pottery and ceramics, sculpture and props, foam and blank shaping, furniture and dowels, pipe and round stock, and packing odd parts.
+
+Also used in classrooms and field notes for comparing diameters of everyday objects!
 
 ## Buying
 
