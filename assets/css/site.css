@@ -110,7 +110,7 @@ a:hover { color: var(--copper); }
   font-weight: 600;
   line-height: 1.12;
   margin: 0.3rem 0 0.8rem;
-  max-width: 16ch;
+  max-width: 22ch;
 }
 
 .hero p {
