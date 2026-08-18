@@ -37,13 +37,14 @@
         <p class="eyebrow">{{ status.replace("_", " ") }}</p>
       {% endif %}
       <h1>{{ product.title }}</h1>
-      {% if product.price %}<p class="price">{{ product.price }}</p>{% endif %}
       {% if product.excerpt %}<p class="lede">{{ product.excerpt }}</p>{% endif %}
 
-      {% if status == "available" and product.shopify_url %}
+      {% set pay_url = product.stripe_url or product.payment_url or product.shopify_url %}
+      {% if status == "available" and pay_url %}
         <p>
-          <a class="btn" href="{{ product.shopify_url }}">Buy with Shopify</a>
+          <a class="btn btn-buy" href="{{ pay_url }}">{{ product.price or "Buy now" }}</a>
         </p>
+        <p class="hint">Checkout is hosted by Stripe. You pay there; we ship from Spokane.</p>
       {% elif status == "coming_soon" %}
         <p class="notice">This product is not for sale yet. Check back, or <a href="{{ url('/contact/') }}">contact us</a> if you want to be notified.</p>
       {% elif status == "sold_out" %}

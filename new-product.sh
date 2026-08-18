@@ -32,5 +32,5 @@ EOF
 echo "Created ${dest}"
 echo "Add photos to assets/images/products/ (update image: and gallery: in the markdown)."
 echo "Add manuals to assets/files/${slug}/"
-echo "Paste a Shopify payment link into shopify_url when you want a Buy button."
+echo "Paste a Stripe Payment Link into stripe_url when you want a Buy button."
 echo "Then run: python3 build.py && python3 -m http.server -d _site 4000"

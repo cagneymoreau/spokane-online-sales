@@ -151,6 +151,12 @@ a:hover { color: var(--copper); }
 
 .btn:hover { background: var(--copper-dark); color: #fff; }
 
+.btn-buy {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  padding: 0.75rem 1.35rem;
+}
+
 .btn-ghost {
   border: 1px solid #c9c2b3;
   color: inherit;
@@ -254,9 +260,14 @@ h1, h2, h3 {
 .card-meta {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   margin: 0 !important;
   color: var(--ink) !important;
+}
+
+.card-meta .btn-buy {
+  font-size: 1rem;
+  padding: 0.4rem 0.9rem;
 }
 
 .split {

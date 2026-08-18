@@ -13,7 +13,10 @@
     <h3><a href="{{ url(product.url) }}">{{ product.title }}</a></h3>
     {% if product.excerpt %}<p>{{ product.excerpt }}</p>{% endif %}
     <p class="card-meta">
-      {% if product.price %}<strong>{{ product.price }}</strong>{% endif %}
+      {% set pay_url = product.stripe_url or product.payment_url or product.shopify_url %}
+      {% if product.status == "available" and pay_url %}
+        <a class="btn btn-buy" href="{{ pay_url }}">{{ product.price or "Buy now" }}</a>
+      {% endif %}
       <a href="{{ url(product.url) }}">Details</a>
     </p>
   </div>

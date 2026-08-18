@@ -9,8 +9,8 @@ image: /assets/images/products/your-slug.jpg
 # Extra photos (optional)
 gallery:
   - /assets/images/products/your-slug-2.jpg
-# Shopify payment link or product checkout URL
-shopify_url: ""
+# Stripe Payment Link (Dashboard → Payment links). Paste the https://buy.stripe.com/... URL.
+stripe_url: ""
 featured: false
 specs:
   SKU: ""

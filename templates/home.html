@@ -11,7 +11,7 @@
     <div class="section-head">
       <p class="eyebrow">Catalog</p>
       <h2>Products</h2>
-      <p class="lede">Each listing is a full product page: photos, description, manuals, and a Shopify checkout link when it is for sale.</p>
+      <p class="lede">Each listing is a full product page: photos, description, manuals, and a Stripe checkout link when it is for sale.</p>
     </div>
     <div class="cards">
       {% for product in products %}
@@ -35,7 +35,7 @@
     <div class="prose">
       <p class="eyebrow">The company</p>
       <h2>{{ site.legal_name }}</h2>
-      <p>A Washington LLC based in {{ site.location }}. The site is the storefront: products here, checkout through Shopify, and a direct line if you want to talk about a build.</p>
+      <p>A Washington LLC based in {{ site.location }}. The site is the storefront: products here, checkout through Stripe, and a direct line if you want to talk about a build.</p>
       <p><a class="btn-ghost" href="{{ url('/contact/') }}">Contact</a></p>
     </div>
   </div>

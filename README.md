@@ -1,15 +1,15 @@
 # Spokane Online Sales website
 
-Static site for **Spokane Online Sales LLC**. Host it on **GitHub Pages** (free). Point a cheap domain at it. Sell with **Shopify payment links** on each product page.
+Static site for **Spokane Online Sales LLC**. Host it on **GitHub Pages** (free). Point a cheap domain at it. Sell with **Stripe Payment Links** on each product page. Quote contract work, then send a **Stripe Invoice**.
 
-Images and manuals are files in this folder. GitHub Pages will serve them.
+Images and manuals are files in this folder. GitHub Pages will serve them. Do not put Stripe secret keys in this repo — GitHub Pages is public static files.
 
 ## What you get
 
 - **Home** — landing page, product cards, contract-work pitch
 - **Products** — catalog
-- **Each product** — photos, description, specs, manuals, Shopify buy button
-- **Contract work** — hire for electronics design
+- **Each product** — photos, description, specs, manuals, Stripe buy button
+- **Contract work** — hire for electronics design (invoiced after a quote)
 - **Contact** — email, optional form
 
 ## Cost
@@ -17,13 +17,13 @@ Images and manuals are files in this folder. GitHub Pages will serve them.
 - **GitHub Pages:** free
 - **This site:** free
 - **Domain:** about $10–15 / year (Porkbun, Cloudflare, Namecheap)
-- **Shopify:** not free. Payment links need a Shopify plan (Starter is the cheap option if you only need links). Card fees still apply.
+- **Stripe:** no monthly fee. US cards are typically 2.9% + $0.30 per successful payment.
 - **Email on your domain:** GitHub Pages does not include email. Use the registrar mailbox, Google Workspace, Fastmail, or similar.
 - **Contact form:** optional free [Formspree](https://formspree.io) tier
 
 GitHub Pages **can** host product photos and PDF manuals. Practical limits: about **100 MB per file**, keep the whole repo well under **1 GB**. Do not put large videos in the repo.
 
-A payment link is one product per click. A real multi-item cart needs Shopify’s Buy Button or a Shopify-hosted storefront. Linking out per product is the cheap version.
+A payment link is one product per click. There is no multi-item cart.
 
 ## Preview on your computer
 
@@ -77,7 +77,7 @@ Then:
 2. Set `image:` and optional `gallery:` in the markdown file.
 3. Drop PDFs in `assets/files/tank-sensor/` and list them under `files:`.
 4. Write the sales copy in the markdown body.
-5. Create a Shopify payment link, paste it into `shopify_url:`, set `status: available`.
+5. In Stripe: [Payment links](https://dashboard.stripe.com/payment-links) → create a link for that SKU (collect shipping address). Paste it into `stripe_url:`, set `status: available`.
 6. Run `python build.py` to preview, then push.
 
 `status` can be `available`, `coming_soon`, or `sold_out`.
