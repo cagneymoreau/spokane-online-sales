@@ -33,7 +33,9 @@
 
     <div class="product-buy">
       {% set status = product.status %}
-      <p class="eyebrow">{{ status.replace("_", " ") }}</p>
+      {% if status == "coming_soon" or status == "sold_out" %}
+        <p class="eyebrow">{{ status.replace("_", " ") }}</p>
+      {% endif %}
       <h1>{{ product.title }}</h1>
       {% if product.price %}<p class="price">{{ product.price }}</p>{% endif %}
       {% if product.excerpt %}<p class="lede">{{ product.excerpt }}</p>{% endif %}
@@ -42,13 +44,10 @@
         <p>
           <a class="btn" href="{{ product.shopify_url }}">Buy with Shopify</a>
         </p>
-        <p class="hint">Checkout is handled by Shopify. Payment lands in your Shopify orders.</p>
       {% elif status == "coming_soon" %}
         <p class="notice">This product is not for sale yet. Check back, or <a href="{{ url('/contact/') }}">contact us</a> if you want to be notified.</p>
       {% elif status == "sold_out" %}
         <p class="notice">Currently sold out.</p>
-      {% elif status == "available" %}
-        <p class="notice">Add a Shopify payment link in this product’s <code>shopify_url</code> field to enable buying.</p>
       {% endif %}
 
       {% if product.specs %}
@@ -74,8 +73,12 @@
       <ul>
         {% for file in product.files %}
           <li>
-            <a href="{{ url(file.path) }}">{{ file.name }}</a>
-            {% if file.note %}<span class="muted"> — {{ file.note }}</span>{% endif %}
+            {% if file.path %}
+              <a href="{{ url(file.path) }}">{{ file.name }}</a>
+              {% if file.note %}<span class="muted"> — {{ file.note }}</span>{% endif %}
+            {% else %}
+              {{ file.name }}
+            {% endif %}
           </li>
         {% endfor %}
       </ul>

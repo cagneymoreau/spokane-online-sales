@@ -1,37 +1,29 @@
 ---
 title: Contract work
 eyebrow: Custom hardware
-lede: Hire us to design electronics products — from a first schematic through a prototype you can hold.
-permalink: contract
+lede: Get the support you need in making your idea a product
 ---
 
-We take on focused design work for people and businesses who need a custom electronics product, not a catalog item. Work is done as {{ site.legal_name }}, based in {{ site.location }}.
+The goal should be affordable & fast design iterations that allow you to quickly develope your idea and maintain control and understanding of the details throughout
 
-## What we do
+## Service Available
 
+- Consultation & Market Research
 - Product definition and architecture
 - Schematic capture and PCB layout
 - Firmware for microcontrollers
-- Prototyping and bring-up
+- Mechanical & Graphical design
+- Prototyping and Tooling
 - Documentation so you can manufacture or support the design later
-
-Good fits are measurement tools, sensors, industrial-adjacent gadgets, and small consumer devices. If a project is a poor fit, we will say so quickly.
-
-## How it usually runs
-
-1. You send a short description of the problem, constraints, and timeline via the [contact page]({{ url('/contact/') }}).
-2. We reply with questions and a proposed scope.
-3. If it is a match, we agree on a written scope and fee before design work starts.
-4. You get design files and a prototype path — not just a conversation.
+- Continued development of existing product
 
 Rates and lead time depend on the job. There is no shopping-cart checkout for contract work; it is quoted.
 
 ## What to include in the first email
 
-- What the device should do
-- Environment (bench, vehicle, outdoors, wet, noisy power, etc.)
-- Whether you need one prototype or a path to a small production run
-- Deadline, if you have one
-- Budget range, if you have one
+- Who you are or your organization
+- What the device does in brief or category of device
+- What service you are requesting
+
 
 <p><a class="btn" href="{{ url('/contact/') }}">Start a project inquiry</a></p>

@@ -7,7 +7,9 @@
     {% endif %}
   </a>
   <div class="card-body">
-    <p class="eyebrow">{{ product.status.replace("_", " ") }}</p>
+    {% if product.status == "coming_soon" or product.status == "sold_out" %}
+      <p class="eyebrow">{{ product.status.replace("_", " ") }}</p>
+    {% endif %}
     <h3><a href="{{ url(product.url) }}">{{ product.title }}</a></h3>
     {% if product.excerpt %}<p>{{ product.excerpt }}</p>{% endif %}
     <p class="card-meta">
