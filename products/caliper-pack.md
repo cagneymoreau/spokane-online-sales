@@ -1,6 +1,6 @@
 ---
 title: Outside Caliper Pack, Pocket 4.5" & Large 14" Diameter Gauge for Trees, Produce, Crafts & Shop
-excerpt: his is a two-piece outside caliper pack: a pocket caliper for everyday small spans and a large 14-inch caliper for bigger round and odd-shaped objects. Span the jaws around something a tape does not sit on well, then read the gap on the scale.
+excerpt: This is a two-piece outside caliper pack: a pocket caliper for everyday small spans and a large 14-inch caliper for bigger round and odd-shaped objects. Span the jaws around something a tape does not sit on well, then read the gap on the scale.
 price: "$TBD"
 status: coming_soon
 image: /assets/images/products/caliper-pack.svg
