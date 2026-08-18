@@ -58,7 +58,10 @@ def load_products() -> list[dict]:
     for path in sorted(PRODUCTS.glob("*.md")):
         if path.name.startswith("_"):
             continue
-        meta, body = split_frontmatter(path.read_text(encoding="utf-8"))
+        try:
+            meta, body = split_frontmatter(path.read_text(encoding="utf-8"))
+        except yaml.YAMLError as exc:
+            raise SystemExit(f"YAML error in {path}: {exc}") from exc
         slug = path.stem
         product = {
             **meta,
