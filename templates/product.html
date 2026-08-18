@@ -42,7 +42,7 @@
       {% set pay_url = product.stripe_url or product.payment_url or product.shopify_url %}
       {% if status == "available" and pay_url %}
         <p>
-          <a class="btn btn-buy" href="{{ pay_url }}">{{ product.price or "Buy now" }}</a>
+          <a class="btn btn-buy" href="{{ pay_url }}">{% if product.price %}Buy now · {{ product.price }}{% else %}Buy now{% endif %}</a>
         </p>
         <p class="hint">Checkout is hosted by Stripe. You pay there; we ship from Spokane.</p>
       {% elif status == "coming_soon" %}
