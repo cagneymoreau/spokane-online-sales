@@ -61,6 +61,14 @@ a:hover { color: var(--copper); }
   flex-wrap: wrap;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: inherit;
+}
+
 .brand img {
   height: 2.6rem;
   width: auto;
