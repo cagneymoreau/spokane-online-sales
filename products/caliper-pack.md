@@ -11,6 +11,7 @@ gallery:
   - /assets/images/products/caliper/photo_3_2026-08-18_09-03-42.jpg
   - /assets/images/products/caliper/photo_4_2026-08-18_09-03-42.jpg
 stripe_url: "https://buy.stripe.com/dRm00caSbgMigLLcBF0x200"
+shipping: Free shipping
 featured: true
 files:
   - name: "None"

@@ -157,6 +157,11 @@ a:hover { color: var(--copper); }
   padding: 0.75rem 1.35rem;
 }
 
+.shipping {
+  font-weight: 600;
+  margin: 0.35rem 0 0.15rem;
+}
+
 .btn-ghost {
   border: 1px solid #c9c2b3;
   color: inherit;
@@ -256,6 +261,12 @@ h1, h2, h3 {
 .card-body h3 a { color: inherit; text-decoration: none; }
 
 .card-body p { margin: 0 0 0.7rem; color: var(--muted); font-size: 0.95rem; }
+
+.card-shipping {
+  font-weight: 600;
+  color: var(--ink) !important;
+  font-size: 0.9rem;
+}
 
 .card-meta {
   display: flex;

@@ -44,6 +44,7 @@
         <p>
           <a class="btn btn-buy" href="{{ pay_url }}">{% if product.price %}Buy now · {{ product.price }}{% else %}Buy now{% endif %}</a>
         </p>
+        {% if product.shipping %}<p class="shipping">{{ product.shipping }}</p>{% endif %}
         <p class="hint">Checkout is hosted by Stripe. You pay there; we ship from Spokane.</p>
       {% elif status == "coming_soon" %}
         <p class="notice">This product is not for sale yet. Check back, or <a href="{{ url('/contact/') }}">contact us</a> if you want to be notified.</p>

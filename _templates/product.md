@@ -11,6 +11,8 @@ gallery:
   - /assets/images/products/your-slug-2.jpg
 # Stripe Payment Link (Dashboard → Payment links). Paste the https://buy.stripe.com/... URL.
 stripe_url: ""
+# Shown under the buy button, e.g. Free shipping
+shipping: ""
 featured: false
 specs:
   SKU: ""
