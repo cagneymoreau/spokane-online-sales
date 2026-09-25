@@ -17,6 +17,7 @@ TEMPLATES = ROOT / "templates"
 PRODUCTS = ROOT / "products"
 PAGES = ROOT / "pages"
 ASSETS = ROOT / "assets"
+OPEN = ROOT / "open"
 OUT = ROOT / "_site"
 
 
@@ -98,6 +99,10 @@ def main() -> None:
 
     if ASSETS.exists():
         shutil.copytree(ASSETS, OUT / "assets")
+
+    # Guest gate opener: a fixed, self-contained page that product invites link to.
+    if OPEN.exists():
+        shutil.copytree(OPEN, OUT / "open")
 
     cname = ROOT / "CNAME"
     if cname.exists():

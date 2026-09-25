@@ -1,0 +1,139 @@
+<!doctype html>
+<!-- Guest gate opener. The unit and key ride after # in the link, so they never reach this web server. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Open the gate</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 1.5rem; background: #f4f5f7; color: #1d2330; text-align: center; }
+  main { max-width: 26rem; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0.5rem 0 0.25rem; }
+  #who { color: #5b6477; margin: 0 0 1.5rem; }
+  #open { width: 100%; font-size: 1.6rem; padding: 1.4rem; border: 0; border-radius: 1rem; background: #1f7a3f; color: #fff; }
+  #open:disabled { background: #8aa894; }
+  #status { min-height: 3rem; margin: 1rem 0; font-size: 1.1rem; }
+  .ok { color: #1f7a3f; font-weight: 600; }
+  .bad { color: #a2261d; font-weight: 600; }
+  .help { text-align: left; background: #fff; border-radius: 0.75rem; padding: 0.75rem 1rem; margin-top: 1.5rem; font-size: 0.95rem; }
+  .help a { word-break: break-all; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Open the gate</h1>
+  <p id="who"></p>
+  <button id="open" type="button">Open</button>
+  <p id="status"></p>
+  <div class="help" id="no-bluetooth" hidden>
+    <p><b>This browser cannot use Bluetooth.</b></p>
+    <p>Android: open this link in Chrome.<br>iPhone: install <b>Bluefy</b> (free on the App Store) and open this link in it.</p>
+    <p><button id="copy" type="button">Copy this link</button></p>
+  </div>
+  <div class="help">
+    <p>Stand near the gate with Bluetooth on. Pick the gate when your phone asks.</p>
+    <p id="wifi-help" hidden>No Bluetooth? Join the gate's Wi-Fi, then <a id="wifi-link" href="#">tap here</a>.</p>
+  </div>
+</main>
+<script>
+const SERVICE = "5a0e0001-7c3b-4d2a-9f41-a3c5d0e1b2f0";
+const CHALLENGE = "5a0e0002-7c3b-4d2a-9f41-a3c5d0e1b2f0";
+const ANSWER = "5a0e0003-7c3b-4d2a-9f41-a3c5d0e1b2f0";
+const RESULT = "5a0e0004-7c3b-4d2a-9f41-a3c5d0e1b2f0";
+const invite = new URLSearchParams(location.hash.slice(1));
+const unit = invite.get("u") || "";
+const key = invite.get("k") || "";
+const guest = invite.get("n") || "";
+const button = document.getElementById("open");
+const status = document.getElementById("status");
+
+function say(text, kind) {
+  status.textContent = text;
+  status.className = kind || "";
+}
+
+function pause(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function sign(challenge) {
+  const secret = await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return crypto.subtle.sign("HMAC", secret, challenge);
+}
+
+async function readResult(service) {
+  const result = await service.getCharacteristic(RESULT);
+  for (let tries = 0; tries < 20; tries += 1) {
+    const value = await result.readValue();
+    if (value.getUint8(0) !== 0) {
+      return value.getUint8(0);
+    }
+    await pause(150);
+  }
+  return 0;
+}
+
+async function openGate() {
+  button.disabled = true;
+  let device = null;
+  try {
+    say("Looking for the gate…");
+    device = await navigator.bluetooth.requestDevice({ filters: [{ name: "AW-" + unit }], optionalServices: [SERVICE] });
+    say("Connecting…");
+    const server = await device.gatt.connect();
+    const service = await server.getPrimaryService(SERVICE);
+    const challenge = await (await service.getCharacteristic(CHALLENGE)).readValue();
+    const answer = await service.getCharacteristic(ANSWER);
+    const signature = await sign(challenge.buffer.slice(challenge.byteOffset, challenge.byteOffset + challenge.byteLength));
+    await (answer.writeValueWithResponse ? answer.writeValueWithResponse(signature) : answer.writeValue(signature));
+    const result = await readResult(service);
+    if (result === 1) {
+      say("Gate opening", "ok");
+    } else if (result === 2) {
+      say("This invite was refused. It may have expired, been removed, or be outside guest hours.", "bad");
+    } else {
+      say("The gate did not answer. Try again.", "bad");
+    }
+  } catch (error) {
+    const cancelled = error && error.name === "NotFoundError";
+    say(cancelled ? "No gate picked. Get closer and try again." : "Could not reach the gate: " + (error && error.message ? error.message : error), "bad");
+  } finally {
+    if (device && device.gatt && device.gatt.connected) {
+      device.gatt.disconnect();
+    }
+    button.disabled = false;
+  }
+}
+
+if (!unit || !key) {
+  document.getElementById("who").textContent = "This link is missing its invite. Ask the gate owner to send it again.";
+  button.hidden = true;
+} else {
+  document.getElementById("who").textContent = guest ? "Invite for " + guest : "Guest invite";
+  const wifi = document.getElementById("wifi-link");
+  wifi.href = "http://192.168.4.1/key?t=" + encodeURIComponent(key);
+  document.getElementById("wifi-help").hidden = false;
+  if (!navigator.bluetooth || !window.isSecureContext) {
+    button.disabled = true;
+    document.getElementById("no-bluetooth").hidden = false;
+  }
+  button.addEventListener("click", openGate);
+}
+
+document.getElementById("copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(location.href);
+    say("Link copied", "ok");
+  } catch (error) {
+    say(location.href);
+  }
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+</script>
+</body>
+</html>
