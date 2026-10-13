@@ -34,7 +34,6 @@
   </div>
   <div class="help">
     <p>Stand near the gate with Bluetooth on. Pick the gate when your phone asks.</p>
-    <p id="wifi-help" hidden>No Bluetooth? Join the gate's Wi-Fi, then <a id="wifi-link" href="#">tap here</a>.</p>
   </div>
 </main>
 <script>
@@ -112,9 +111,6 @@ if (!unit || !key) {
   button.hidden = true;
 } else {
   document.getElementById("who").textContent = guest ? "Invite for " + guest : "Guest invite";
-  const wifi = document.getElementById("wifi-link");
-  wifi.href = "http://192.168.4.1/key?t=" + encodeURIComponent(key);
-  document.getElementById("wifi-help").hidden = false;
   if (!navigator.bluetooth || !window.isSecureContext) {
     button.disabled = true;
     document.getElementById("no-bluetooth").hidden = false;
