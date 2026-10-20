@@ -104,10 +104,9 @@ function showSeries(file) {
     box.appendChild(element("p", values.length
       ? values.length + " samples, " + Math.min(...values) + " to " + Math.max(...values) + (/hertz/i.test(series.name) ? " Hz" : "") + (starts > 1 ? ", across " + starts + " starts of the unit." : ".") + " Times count from each start, so a restart begins again at 0."
       : "No samples.", "muted"));
-    const canvas = element("canvas");
-    box.appendChild(canvas);
-    drawSeries(canvas, series.samples);
-    window.addEventListener("resize", () => drawSeries(canvas, series.samples));
+    if (values.length) {
+      new SeriesView(box, series.samples, /hertz/i.test(series.name) ? " Hz" : "");
+    }
   }
 }
 

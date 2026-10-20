@@ -1,19 +1,50 @@
-// Unit file viewer: draws one history series as a line, each start of the unit its own stretch with a restart mark between them.
+// Unit file viewer: lays one history series out on a single line of time, each start of the unit its own stretch, and draws a view of it.
 "use strict";
 
 function cssColor(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-// Time since the unit started, as h:mm:ss.
-function sinceStart(milliseconds) {
+// Time since the unit started, as h:mm:ss, with tenths when the view is close enough to need them.
+function sinceStart(milliseconds, tenths) {
   const seconds = Math.floor(milliseconds / 1000);
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  return hours + ":" + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  const text = hours + ":" + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  return tenths ? text + "." + Math.floor((milliseconds % 1000) / 100) : text;
 }
 
-function drawSeries(canvas, samples) {
+// Each start's samples placed one after another on one line: x is that line's position, so starts never overlap. A small gap marks a restart.
+function layOut(samples) {
+  const starts = splitStarts(samples);
+  const spans = starts.map((run) => Math.max(run[run.length - 1].t - run[0].t, 1));
+  const total = spans.reduce((sum, span) => sum + span, 0);
+  const gap = starts.length > 1 ? total * 0.02 : 0;
+  const points = [];
+  const restarts = [];
+  const segments = [];
+  let offset = 0;
+  starts.forEach((run, index) => {
+    segments.push({from: offset, to: offset + spans[index], first: run[0].t, start: index + 1});
+    run.forEach((row) => points.push({x: offset + (row.t - run[0].t), t: row.t, value: row.value, start: index + 1}));
+    offset += spans[index];
+    if (index + 1 < starts.length) {
+      restarts.push(offset + gap / 2);
+      offset += gap;
+    }
+  });
+  return {points, restarts, segments, end: Math.max(offset, 1)};
+}
+
+// A tick spacing in milliseconds of about one label per 110 pixels, on a round step.
+function tickStep(milliseconds, pixels) {
+  const wanted = (milliseconds * 110) / Math.max(pixels, 1);
+  const steps = [100, 200, 500, 1000, 2000, 5000, 10000, 15000, 30000, 60000, 120000, 300000, 600000, 900000, 1800000, 3600000, 7200000, 21600000, 43200000, 86400000];
+  return steps.find((step) => step >= wanted) || steps[steps.length - 1];
+}
+
+// Draws the view [x0, x1] of the layout with values y = [low, high], and the cursor's point when there is one. Returns the plot's area.
+function drawView(canvas, layout, x0, x1, y, cursor) {
   const ratio = window.devicePixelRatio || 1;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -23,73 +54,78 @@ function drawSeries(canvas, samples) {
   ctx.scale(ratio, ratio);
   ctx.clearRect(0, 0, width, height);
   ctx.font = "11px system-ui, sans-serif";
-  if (samples.length === 0) {
-    ctx.fillStyle = cssColor("--muted");
-    ctx.fillText("No samples in this file.", 8, 20);
-    return;
-  }
-  const starts = splitStarts(samples);
-  // Each start gets room for its own span; restarts get a small gap so the break shows.
-  const spans = starts.map((run) => Math.max(run[run.length - 1].t - run[0].t, 1));
-  const total = spans.reduce((sum, span) => sum + span, 0);
-  const gap = starts.length > 1 ? total * 0.02 : 0;
-  // The axis spans every value in the file, the highest and lowest included.
-  const values = samples.map((row) => row.value);
-  const low = Math.min(...values);
-  const high = Math.max(...values);
-  const margin = Math.max((high - low) * 0.1, Math.abs(high) * 0.0005, 1);
-  const padLeft = 64, padRight = 10, padTop = 10, padBottom = 24;
-  const plotWidth = width - padLeft - padRight;
-  const scale = plotWidth / (total + gap * (starts.length - 1));
-  const bottom = low - margin, top = high + margin;
-  const yOf = (value) => padTop + (1 - (value - bottom) / (top - bottom)) * (height - padTop - padBottom);
-  let lastLabelEnd = -Infinity;
+  const area = {left: 64, right: width - 10, top: 10, bottom: height - 24};
+  const xOf = (x) => area.left + ((x - x0) / (x1 - x0)) * (area.right - area.left);
+  const yOf = (value) => area.top + (1 - (value - y[0]) / (y[1] - y[0])) * (area.bottom - area.top);
+  // Grid: five value lines, and time ticks inside each start's stretch.
   ctx.strokeStyle = cssColor("--line");
-  ctx.beginPath();
-  ctx.moveTo(padLeft, padTop);
-  ctx.lineTo(padLeft, height - padBottom);
-  ctx.lineTo(width - padRight, height - padBottom);
-  ctx.stroke();
-  let offset = padLeft;
-  starts.forEach((run, index) => {
-    const xOf = (t) => offset + (t - run[0].t) * scale;
-    // A history keeps a value until it moves, so the line holds each value until the next.
-    ctx.strokeStyle = cssColor("--accent");
-    ctx.beginPath();
-    run.forEach((row, at) => {
-      if (at === 0) {
-        ctx.moveTo(xOf(row.t), yOf(row.value));
-      } else {
-        ctx.lineTo(xOf(row.t), yOf(run[at - 1].value));
-        ctx.lineTo(xOf(row.t), yOf(row.value));
-      }
-    });
-    ctx.stroke();
-    // A start's time under it, unless the last label is still in the way.
-    const label = sinceStart(run[0].t);
-    if (offset > lastLabelEnd + 6) {
-      ctx.fillStyle = cssColor("--muted");
-      ctx.fillText(label, offset, height - 8);
-      lastLabelEnd = offset + ctx.measureText(label).width;
-    }
-    offset += spans[index] * scale;
-    if (index + 1 < starts.length) {
-      const mark = offset + (gap * scale) / 2;
-      ctx.strokeStyle = cssColor("--warn");
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(mark, padTop);
-      ctx.lineTo(mark, height - padBottom);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = cssColor("--warn");
-      ctx.fillText("restart", mark + 3, padTop + 10);
-      offset += gap * scale;
-    }
-  });
   ctx.fillStyle = cssColor("--muted");
   ctx.textAlign = "right";
-  ctx.fillText(String(Math.round(top)), padLeft - 6, padTop + 10);
-  ctx.fillText(String(Math.round(bottom)), padLeft - 6, height - padBottom);
+  for (let line = 0; line <= 4; ++line) {
+    const value = y[0] + ((y[1] - y[0]) * line) / 4;
+    ctx.beginPath();
+    ctx.moveTo(area.left, yOf(value));
+    ctx.lineTo(area.right, yOf(value));
+    ctx.stroke();
+    ctx.fillText(Math.abs(y[1] - y[0]) < 20 ? value.toFixed(1) : String(Math.round(value)), area.left - 6, yOf(value) + 4);
+  }
+  ctx.textAlign = "center";
+  const step = tickStep(x1 - x0, area.right - area.left);
+  for (const segment of layout.segments) {
+    for (let t = Math.ceil(segment.first / step) * step; segment.from + (t - segment.first) <= Math.min(segment.to, x1); t += step) {
+      const x = segment.from + (t - segment.first);
+      if (x < x0) {
+        continue;
+      }
+      ctx.beginPath();
+      ctx.moveTo(xOf(x), area.top);
+      ctx.lineTo(xOf(x), area.bottom);
+      ctx.stroke();
+      ctx.fillText(sinceStart(t, step < 1000), xOf(x), height - 8);
+    }
+  }
+  // The line holds each value until the next, as the history keeps a value until it moves. Drawn inside the plot's frame.
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+  ctx.clip();
+  ctx.strokeStyle = cssColor("--accent");
+  ctx.beginPath();
+  let previous = null;
+  for (const point of layout.points) {
+    if (previous && previous.start === point.start && point.x >= x0 && previous.x <= x1) {
+      ctx.moveTo(xOf(previous.x), yOf(previous.value));
+      ctx.lineTo(xOf(point.x), yOf(previous.value));
+      ctx.lineTo(xOf(point.x), yOf(point.value));
+    }
+    previous = point;
+  }
+  ctx.stroke();
+  ctx.strokeStyle = cssColor("--warn");
+  ctx.fillStyle = cssColor("--warn");
+  ctx.setLineDash([4, 4]);
   ctx.textAlign = "left";
+  for (const restart of layout.restarts.filter((x) => x >= x0 && x <= x1)) {
+    ctx.beginPath();
+    ctx.moveTo(xOf(restart), area.top);
+    ctx.lineTo(xOf(restart), area.bottom);
+    ctx.stroke();
+    ctx.fillText("restart", xOf(restart) + 3, area.top + 10);
+  }
+  ctx.setLineDash([]);
+  if (cursor) {
+    ctx.strokeStyle = cssColor("--muted");
+    ctx.beginPath();
+    ctx.moveTo(xOf(cursor.x), area.top);
+    ctx.lineTo(xOf(cursor.x), area.bottom);
+    ctx.stroke();
+    ctx.fillStyle = cssColor("--accent");
+    ctx.beginPath();
+    ctx.arc(xOf(cursor.x), yOf(cursor.value), 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+  ctx.strokeStyle = cssColor("--line");
+  ctx.strokeRect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+  return area;
 }
