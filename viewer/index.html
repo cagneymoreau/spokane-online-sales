@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- Unit file viewer. A downloaded settings file is read and drawn in this browser only; the page's policy forbids sending anything anywhere. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>Unit file viewer</title>
+<style>
+  :root { --bg: #f4f5f7; --card: #fff; --text: #1d2330; --muted: #5b6477; --line: #d9dde5; --accent: #1f6fb5; --warn: #b5541f; --bad: #a2261d; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171d; --card: #1e232b; --text: #e6e9ef; --muted: #9aa3b5; --line: #343b47; --accent: #5aa7ea; --warn: #e89a5c; --bad: #f07a70; }
+  }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 1rem; background: var(--bg); color: var(--text); }
+  main { max-width: 60rem; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0.5rem 0; }
+  h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+  p { line-height: 1.45; }
+  .muted { color: var(--muted); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 0.75rem; padding: 1rem; margin: 1rem 0; overflow-x: auto; }
+  #drop { border: 2px dashed var(--line); border-radius: 0.75rem; padding: 1.5rem; text-align: center; }
+  #drop.over { border-color: var(--accent); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  td.key { font-family: ui-monospace, monospace; white-space: nowrap; }
+  td.about { color: var(--muted); font-size: 0.85rem; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem; }
+  .fact b { display: block; font-size: 1.1rem; }
+  .fact span { color: var(--muted); font-size: 0.85rem; }
+  canvas { width: 100%; height: 14rem; display: block; }
+  .restart td { color: var(--warn); font-weight: 600; }
+  .error { color: var(--bad); font-weight: 600; }
+  pre { white-space: pre-wrap; word-break: break-word; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Unit file viewer</h1>
+  <p class="muted">Open a settings file downloaded from an Access Wizard unit to see its settings, history, and events. The file is read on this computer only: nothing is uploaded, and this page cannot send anything anywhere. The unit's Wi-Fi password and guest codes are never in the file.</p>
+  <div class="card" id="drop">
+    <p><input type="file" id="file" accept=".txt,text/plain"></p>
+    <p class="muted">or drop the file here</p>
+  </div>
+  <p id="message"></p>
+  <div id="report"></div>
+</main>
+<script src="parse.js"></script>
+<script src="chart.js"></script>
+<script src="viewer.js"></script>
+</body>
+</html>

@@ -18,6 +18,7 @@ PRODUCTS = ROOT / "products"
 PAGES = ROOT / "pages"
 ASSETS = ROOT / "assets"
 OPEN = ROOT / "open"
+VIEWER = ROOT / "viewer"
 OUT = ROOT / "_site"
 
 
@@ -103,6 +104,10 @@ def main() -> None:
     # Guest gate opener: a fixed, self-contained page that product invites link to.
     if OPEN.exists():
         shutil.copytree(OPEN, OUT / "open")
+
+    # Unit file viewer: a fixed, self-contained page that reads a downloaded settings file in the browser only.
+    if VIEWER.exists():
+        shutil.copytree(VIEWER, OUT / "viewer")
 
     cname = ROOT / "CNAME"
     if cname.exists():
