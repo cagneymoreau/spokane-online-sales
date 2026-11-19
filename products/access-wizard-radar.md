@@ -3,8 +3,9 @@ title: Access Wizard Radar
 excerpt: Phone access, plus a radar that sees a vehicle at the gate, moving or stopped. No pavement cut. Your phone is still the key.
 price: ""
 status: coming_soon
-image: /assets/images/products/access-wizard-radar/radar_sidewalk.jpg
+image: /assets/images/products/access-wizard-radar/radar_scene.jpg
 gallery:
+  - /assets/images/products/access-wizard-radar/radar_sidewalk.jpg
   - /assets/images/products/access-wizard-radar/radar_house.jpg
   - /assets/images/products/access-wizard-radar/radar_mounts.png
   - /assets/images/products/access-wizard-radar/radar_sticker.png
@@ -40,7 +41,7 @@ files:
 
 Vehicle detection with no loop to bury. Phone access, plus a radar that sees a vehicle at the gate, moving or stopped. No pavement cut. Your phone is still the key. No cloud account.
 
-Photos: field test units on our own driveway and street, in the test enclosure. The production unit ships in an outdoor junction box.
+The first picture is an illustration of the production unit: the outdoor junction box on a post beside the drive. The photos after it are field test units on our own driveway and street, in the test enclosure.
 
 ## What you get
 

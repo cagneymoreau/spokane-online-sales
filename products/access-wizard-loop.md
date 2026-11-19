@@ -6,6 +6,8 @@ status: coming_soon
 image: /assets/images/products/access-wizard-loop/loop_hero.jpg
 gallery:
   - /assets/images/products/access-wizard-loop/loop_wires.jpg
+  - /assets/images/products/access-wizard-loop/loop_install_loops.png
+  - /assets/images/products/access-wizard-loop/loop_install_gate.png
   - /assets/images/products/access-wizard-loop/blocking.jpg
 stripe_url: ""
 shipping: ""
