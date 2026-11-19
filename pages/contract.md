@@ -1,12 +1,17 @@
 ---
-title: Contract work
-eyebrow: Custom hardware
+title: Contract/Consulting
+eyebrow: Personal Support
 lede: Get the support you need in making your idea a product
 ---
 
-The goal should be affordable & fast design iterations that allow you to quickly develope your idea and maintain control and understanding of the details throughout
+## AI Consulting Services Available
 
-## Service Available
+Speed up your team with AI workflow that faster to develop, have better features and are safer and more reliable for users.
+
+
+## Contract Service Available
+
+The goal should be affordable & fast design iterations that allow you to quickly develope your idea and maintain control and understanding of the details throughout
 
 - Consultation & Market Research
 - Product definition and architecture

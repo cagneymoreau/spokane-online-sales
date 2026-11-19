@@ -3,10 +3,11 @@ title: Access Wizard Phone
 excerpt: Your phone is the key. Connect it to a gate or an electric strike door and it replaces the key or fob. No cloud account.
 price: ""
 status: coming_soon
-image: /assets/images/products/access-wizard-phone/wizard-keypad.jpg
+image: /assets/images/products/access-wizard-phone/phone_hero.jpg
 gallery:
+  - /assets/images/products/access-wizard-phone/phone_wires.jpg
+  - /assets/images/products/access-wizard-phone/wizard-keypad.jpg
   - /assets/images/products/access-wizard-phone/case_closed.png
-  - /assets/images/products/access-wizard-phone/case_wires.png
 stripe_url: ""
 shipping: ""
 featured: true
@@ -25,6 +26,15 @@ files:
   - name: Instructions (page 1 is the quick start)
     path: /assets/files/access-wizard-phone/access-wizard-phone-instructions.pdf
     note: PDF
+  - name: Install spec (ratings and required installation)
+    path: /assets/files/access-wizard-phone/access-wizard-phone-install-spec.pdf
+    note: PDF
+  - name: Safety first (read before you install)
+    path: /assets/files/access-wizard/access-wizard-safety-first.pdf
+    note: PDF, all Access Wizard models
+  - name: Compliance
+    path: /assets/files/access-wizard/access-wizard-compliance.pdf
+    note: PDF, all Access Wizard models
 ---
 
 Your phone is the key.
